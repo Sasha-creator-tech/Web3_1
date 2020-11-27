@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dudle</title>
+    <script src="./node_modules/web3/dist/web3.min.js"></script>
+
+</head>
+<body>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+    <script>
+       if (typeof web3 !== 'undefined') {
+        web3 = new Web3(web3.currentProvider);
+       } else {
+        web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
+       }
+
+       const account1 = '0x8304Fd2ce0C5880e87F82dCa99AbcB5280ce6e33';
+       const account2 = '0xd68B4fB98181c8990D13DfC9688ef4B641B78984';
+
+       function transfer(_value, _address) {
+        web3.eth.getAccounts(function(error, result) {
+        web3.eth.sendTransaction(
+            {from:web3.eth.accounts[0],
+            to:_address,
+            value: web3.toWei(_value, 'ether'),
+                }, function(err, transactionHash) {
+          if (err) {
+            console.log(err); 
+          } else {
+            console.log(transactionHash + " success"); 
+          }
+        });
+    });
+
+    }
+
+    //Get balance of the address
+    web3.eth.defaultAccount = web3.eth.accounts[0];
+    web3.eth.getBalance(account1, (err, bal) => {
+        bal = web3.toWei(bal, 'ether');
+        console.log('account 1 balance: ', bal + ' ether');
+    })
+
+    //Enter in paramatres amount of ether to send to
+    console.log(transfer(10, '0xd68B4fB98181c8990D13DfC9688ef4B641B78984'))
+    </script>
+
+</body>
+</html>
